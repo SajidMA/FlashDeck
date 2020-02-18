@@ -2,9 +2,11 @@
 
 # Lab 1
 
-# A FlashCard app to help you study!
+# App Description
+A FlashCard app to help you study!
 
-http://g.recordit.co/DknWbqYDdT.gif
+# App Walk-through
+<img src="http://g.recordit.co/DknWbqYDdT.gif" width=200><br
 
 ## Required
 - [x] Create New Project in Android Studio
