@@ -1,6 +1,7 @@
 # Lab 1
 
-### FlashDeck
+### App Name
+FlashDeck
 
 ### App Description
 A FlashCard app to help you study!
