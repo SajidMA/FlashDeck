@@ -1,8 +1,8 @@
-FlashDeck
+# FlashDeck
 
-Lab 1
+# Lab 1
 
-A FlashCard app to help you study!
+# A FlashCard app to help you study!
 
 http://g.recordit.co/DknWbqYDdT.gif
 
