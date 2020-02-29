@@ -7,7 +7,7 @@ FlashDeck
 A FlashCard app to help you study!
 
 ### App Walk-through
-<img src="http://g.recordit.co/oBy2sY2FLu.gif" width=200><br
+<img src="http://g.recordit.co/H99oCUUPW0.gif" width=200><br
 
 ### Required
 - [x] Create New Project in Android Studio
