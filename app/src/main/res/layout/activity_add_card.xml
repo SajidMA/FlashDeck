@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddCardActivity">
+
+    <ImageView
+        android:id="@+id/close_activity"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="525dp"
+        android:layout_marginEnd="40dp"
+        android:src="@drawable/close_icon" />
+
+    <EditText
+        android:id="@+id/new_question"
+        android:layout_width="375dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:hint="Enter The Question Here"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/new_answer1"
+        android:layout_width="375dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:hint="Enter Wrong Answer Here"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/new_answer2"
+        android:layout_width="375dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="220dp"
+        android:hint="Enter Another Wrong Answer Here"
+        android:inputType="textMultiLine" />
+
+    <EditText
+        android:id="@+id/new_answer3"
+        android:layout_width="375dp"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="320dp"
+        android:hint="Enter Correct Answer Here"
+        android:inputType="textMultiLine" />
+
+    <ImageView
+        android:id="@+id/save_question"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="525dp"
+        android:layout_marginEnd="340dp"
+        android:src="@drawable/save_icon" />
+</RelativeLayout>
