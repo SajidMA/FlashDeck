@@ -27,4 +27,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation "androidx.room:room-runtime:2.2.4"
+    annotationProcessor "androidx.room:room-compiler:2.2.4"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
+    implementation 'com.wajahatkarim3:roomexplorer:0.0.2'
 }
