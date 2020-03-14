@@ -14,12 +14,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.wajahatkarim3.roomexplorer.RoomExplorer;
 
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards;
     int currentCardDisplayedIndex = 0;
+    private Flashcard cardToEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,18 +110,29 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
                 currentCardDisplayedIndex = allFlashcards.size();
+
+                a1.setBackgroundColor(Color.parseColor("#f8c471"));
+                a2.setBackgroundColor(Color.parseColor("#f8c471"));
+                a3.setBackgroundColor(Color.parseColor("#f8c471"));
             }
         });
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
-                intent.putExtra("question", ((TextView) findViewById(R.id.flashcard_question)).getText().toString());
-                intent.putExtra("answer1", ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString());
-                intent.putExtra("answer2", ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString());
-                intent.putExtra("answer3", ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString());
-                MainActivity.this.startActivityForResult(intent, 200);
+                if(allFlashcards.size() > 0) {
+                    Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                    intent.putExtra("question", ((TextView) findViewById(R.id.flashcard_question)).getText().toString());
+                    intent.putExtra("answer1", ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString());
+                    intent.putExtra("answer2", ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString());
+                    intent.putExtra("answer3", ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString());
+                    cardToEdit = allFlashcards.get(currentCardDisplayedIndex);
+                    MainActivity.this.startActivityForResult(intent, 200);
+
+                    a1.setBackgroundColor(Color.parseColor("#f8c471"));
+                    a2.setBackgroundColor(Color.parseColor("#f8c471"));
+                    a3.setBackgroundColor(Color.parseColor("#f8c471"));
+                }
             }
         });
 
@@ -127,22 +140,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // advance our pointer index so we can show the next card
-                currentCardDisplayedIndex++;
+                //currentCardDisplayedIndex++;
+                currentCardDisplayedIndex = MainActivity.this.getRandomNumber(0, allFlashcards.size()-1);
 
                 // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
                 if (currentCardDisplayedIndex > allFlashcards.size() - 1) {
                     currentCardDisplayedIndex = 0;
                 }
 
-                // set the question and answer TextViews with data from the database
-                ((TextView) findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
-                ((TextView) findViewById(R.id.flashcard_answer1)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
-                ((TextView) findViewById(R.id.flashcard_answer2)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
-                ((TextView) findViewById(R.id.flashcard_answer3)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+                if(allFlashcards.size() > 0) {
+                    // set the question and answer TextViews with data from the database
+                    ((TextView) findViewById(R.id.flashcard_question)).setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
+                    ((TextView) findViewById(R.id.flashcard_answer1)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer1());
+                    ((TextView) findViewById(R.id.flashcard_answer2)).setText(allFlashcards.get(currentCardDisplayedIndex).getWrongAnswer2());
+                    ((TextView) findViewById(R.id.flashcard_answer3)).setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
 
-                a1.setBackgroundColor(Color.parseColor("#f8c471"));
-                a2.setBackgroundColor(Color.parseColor("#f8c471"));
-                a3.setBackgroundColor(Color.parseColor("#f8c471"));
+                    a1.setBackgroundColor(Color.parseColor("#f8c471"));
+                    a2.setBackgroundColor(Color.parseColor("#f8c471"));
+                    a3.setBackgroundColor(Color.parseColor("#f8c471"));
+                }
             }
         });
 
@@ -151,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 flashcardDatabase.deleteCard(((TextView) findViewById(R.id.flashcard_question)).getText().toString());
                 allFlashcards = flashcardDatabase.getAllCards();
+
+                if(currentCardDisplayedIndex < 1) { currentCardDisplayedIndex = 1; }
 
                 if (allFlashcards.size() > 0 && allFlashcards != null)
                 {
@@ -182,6 +200,13 @@ public class MainActivity extends AppCompatActivity {
                 RoomExplorer.show(MainActivity.this, AppDatabase.class, "flashcard-database");
             }
         });
+    }
+
+    // returns a random number between minNumber and maxNumber, inclusive.
+    // for example, if i called getRandomNumber(1, 3), there's an equal chance of it returning either 1, 2, or 3.
+    public int getRandomNumber(int minNumber, int maxNumber) {
+        Random rand = new Random();
+        return rand.nextInt((maxNumber - minNumber) + 1) + minNumber;
     }
 
     @Override
@@ -217,7 +242,12 @@ public class MainActivity extends AppCompatActivity {
             a1.setText(answer1);
             a2.setText(answer2);
             a3.setText(answer3);
-            flashcardDatabase.updateCard(new Flashcard(question, answer1, answer2, answer3));
+
+            cardToEdit.setQuestion(question);
+            cardToEdit.setAnswer(answer3);
+            cardToEdit.setWrongAnswer1(answer1);
+            cardToEdit.setWrongAnswer2(answer2);
+            flashcardDatabase.updateCard(cardToEdit);
             allFlashcards = flashcardDatabase.getAllCards();
             Snackbar.make(findViewById(R.id.flashcard_question), "Card successfully edited!", Snackbar.LENGTH_SHORT).show();
         }
