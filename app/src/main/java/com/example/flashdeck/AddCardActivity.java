@@ -36,6 +36,7 @@ public class AddCardActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
@@ -54,6 +55,7 @@ public class AddCardActivity extends AppCompatActivity {
                 data.putExtra("answer3", ((EditText) findViewById(R.id.new_answer3)).getText().toString());
                 setResult(RESULT_OK, data);
                 finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
     }

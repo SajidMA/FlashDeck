@@ -31,4 +31,5 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.4"
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
     implementation 'com.wajahatkarim3:roomexplorer:0.0.2'
+    implementation 'com.plattysoft.leonids:LeonidsLib:1.3.2'
 }

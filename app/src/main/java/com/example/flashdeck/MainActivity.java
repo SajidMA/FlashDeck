@@ -1,16 +1,21 @@
 package com.example.flashdeck;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.plattysoft.leonids.ParticleSystem;
 import com.wajahatkarim3.roomexplorer.RoomExplorer;
 
 import java.util.List;
@@ -61,6 +66,20 @@ public class MainActivity extends AppCompatActivity {
                 a1.setBackgroundColor(Color.parseColor("#e74c3c"));
                 a2.setBackgroundColor(Color.parseColor("#f8c471"));
                 a3.setBackgroundColor(Color.parseColor("#229954"));
+                View answerSideView = findViewById(R.id.flashcard_answer1);
+
+                // get the center for the clipping circle
+                int cx = answerSideView.getWidth() / 2;
+                int cy = answerSideView.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
+
+                anim.setDuration(500);
+                anim.start();
             }
         });
 
@@ -70,6 +89,20 @@ public class MainActivity extends AppCompatActivity {
                 a1.setBackgroundColor(Color.parseColor("#f8c471"));
                 a2.setBackgroundColor(Color.parseColor("#e74c3c"));
                 a3.setBackgroundColor(Color.parseColor("#229954"));
+                View answerSideView = findViewById(R.id.flashcard_answer2);
+
+                // get the center for the clipping circle
+                int cx = answerSideView.getWidth() / 2;
+                int cy = answerSideView.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
+
+                anim.setDuration(500);
+                anim.start();
             }
         });
 
@@ -79,6 +112,24 @@ public class MainActivity extends AppCompatActivity {
                 a1.setBackgroundColor(Color.parseColor("#f8c471"));
                 a2.setBackgroundColor(Color.parseColor("#f8c471"));
                 a3.setBackgroundColor(Color.parseColor("#229954"));
+                View answerSideView = findViewById(R.id.flashcard_answer3);
+
+                // get the center for the clipping circle
+                int cx = answerSideView.getWidth() / 2;
+                int cy = answerSideView.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
+
+                anim.setDuration(500);
+                anim.start();
+
+                new ParticleSystem(MainActivity.this, 100, R.drawable.confetti, 3000)
+                        .setSpeedRange(0.2f, 0.5f)
+                        .oneShot(findViewById(R.id.flashcard_answer3), 100);
             }
         });
 
@@ -109,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 currentCardDisplayedIndex = allFlashcards.size();
 
                 a1.setBackgroundColor(Color.parseColor("#f8c471"));
@@ -128,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("answer3", ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString());
                     cardToEdit = allFlashcards.get(currentCardDisplayedIndex);
                     MainActivity.this.startActivityForResult(intent, 200);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
                     a1.setBackgroundColor(Color.parseColor("#f8c471"));
                     a2.setBackgroundColor(Color.parseColor("#f8c471"));
@@ -139,6 +192,35 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.next_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Animation leftOutAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.left_out);
+                final Animation rightInAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.right_in);
+
+                findViewById(R.id.flashcard_question).startAnimation(leftOutAnim);
+                findViewById(R.id.flashcard_answer1).startAnimation(leftOutAnim);
+                findViewById(R.id.flashcard_answer2).startAnimation(leftOutAnim);
+                findViewById(R.id.flashcard_answer3).startAnimation(leftOutAnim);
+
+                leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // this method is called when the animation first starts
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // this method is called when the animation is finished playing
+                        findViewById(R.id.flashcard_question).startAnimation(rightInAnim);
+                        findViewById(R.id.flashcard_answer1).startAnimation(rightInAnim);
+                        findViewById(R.id.flashcard_answer2).startAnimation(rightInAnim);
+                        findViewById(R.id.flashcard_answer3).startAnimation(rightInAnim);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // we don't need to worry about this method
+                    }
+                });
+
                 // advance our pointer index so we can show the next card
                 //currentCardDisplayedIndex++;
                 currentCardDisplayedIndex = MainActivity.this.getRandomNumber(0, allFlashcards.size()-1);
