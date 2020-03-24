@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                currentCardDisplayedIndex = allFlashcards.size();
 
                 a1.setBackgroundColor(Color.parseColor("#f8c471"));
                 a2.setBackgroundColor(Color.parseColor("#f8c471"));
@@ -311,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
             a3.setText(answer3);
             flashcardDatabase.insertCard(new Flashcard(question, answer1, answer2, answer3));
             allFlashcards = flashcardDatabase.getAllCards();
+            currentCardDisplayedIndex++;
             Snackbar.make(findViewById(R.id.flashcard_question), "Card successfully created!", Snackbar.LENGTH_SHORT).show();
         }
 
